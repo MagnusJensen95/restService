@@ -8,6 +8,8 @@ import java.util.Date;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
+import org.json.JSONArray;
+
 import galgeleg.soap.GalgeISOAP;
 
 public class Highscore {
@@ -47,7 +49,7 @@ public class Highscore {
 		QName qname = new QName("http://soap.galgeleg/", "GalgelogikImplService");
 		  Service service = Service.create(url, qname);
 		 GalgeISOAP ba = service.getPort(GalgeISOAP.class);
-		
+		System.out.println(ba.getHighscore());
 		return ba.getHighscore();
 		
 		

@@ -20,6 +20,7 @@ import javax.jws.WebService;
 import brugerautorisation.data.Bruger;
 import brugerautorisation.transport.rmi.Brugeradmin;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.client.Client;
@@ -76,8 +77,14 @@ public class GalgelogikImpl implements GalgeISOAP {
                     Logger.getLogger(GalgelogikImpl.class.getName()).log(Level.SEVERE, null, ex);
                 }
 		try {
-			PrintWriter writer = new PrintWriter(file, "UTF-8");
-			writer.append(currentUser + " vandt spillet med " + getAntalForkerteBogstaver() + " forkerte bogstaver. \n");
+			PrintWriter writer = new PrintWriter(new FileWriter(file,true));
+			//writer.append(currentUser + " vandt spillet med " + getAntalForkerteBogstaver() + " forkerte bogstaver. \n");
+                        JSONObject json = new JSONObject();
+                        json.put("Name", currentUser);
+                        json.put("Score", getAntalForkerteBogstaver());
+                        writer.write(json.toString());
+                        
+                        
                         
                         writer.close();
                 } catch (Exception e) {
@@ -291,14 +298,20 @@ public Bruger hentBruger(String user, String pass) throws Exception {
 		BufferedReader br = new BufferedReader(new FileReader("highscores.txt"));
                 String st = "";
                 String outPut = "";
+               
+               
                 while(( st= br.readLine()) != null ){
-                  outPut +=st;
+                    
+                          outPut +=st;
                 }
 		if (outPut.equals("")){
-		return "ingen highscore fundet";
+		return null;
 		}
 		else{
+                    
+                 
 			return outPut;
+                        
 			
 		}
 	}
